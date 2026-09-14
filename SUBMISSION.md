@@ -23,3 +23,11 @@ I am willing to continue maintaining the agent. Handover is also straightforward
 
 ## Known issues / bugs
 Record only bugs actually reproduced during the final T3N sandbox run. Do not claim unverified SDK bugs as project findings.
+
+## Integration friction observed
+
+During local TypeScript compilation, the installed T3N SDK required the
+`trustAnchor` property on `T3nClientConfig`. The adapter was updated to declare an
+explicit sandbox-only unsafe trust-server anchor. This is documented because an
+omitted trust anchor produces a compile-time failure rather than an ambiguous
+runtime failure.

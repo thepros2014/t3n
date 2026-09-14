@@ -32,3 +32,10 @@ The T3N adapter follows the documented SDK authentication flow: sandbox environm
 
 ## Scope
 This challenge build intentionally stays small: authorization, trust boundary, evidence, tests and handover. It does not pretend to execute arbitrary financial or production actions.
+
+## T3N SDK trust anchor note
+
+The current T3N SDK requires `trustAnchor` in `T3nClientConfig`. This project uses
+`{ unsafe_trust_server: true }` only for sandbox/development verification. Do not
+treat that setting as a production trust policy; production deployment should use
+a verified trust anchor appropriate to the T3N environment.

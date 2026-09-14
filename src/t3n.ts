@@ -7,7 +7,13 @@ export async function authenticateWithT3n():Promise<TrustIdentity> {
  const sdk=await import("@terminal3/t3n-sdk");
  sdk.setEnvironment((process.env.T3N_ENVIRONMENT ?? "sandbox") as "sandbox");
  const address=sdk.eth_get_address(key);
- const client=new sdk.T3nClient({wasmComponent:await sdk.loadWasmComponent(),handlers:{EthSign:sdk.metamask_sign(address,undefined,key)}});
+ const client = new sdk.T3nClient({
+    wasmComponent: await sdk.loadWasmComponent(),
+    handlers: { EthSign: sdk.metamask_sign(address, undefined, key) },
+    // Sandbox/dev only. The installed SDK requires an explicit trust anchor.
+    // Production deployments should use a verified trust anchor instead.
+    trustAnchor: { unsafe_trust_server: true } as const,
+  });
  await client.handshake();
  await client.authenticate(sdk.createEthAuthInput(address));
  return {subject:address,provider:"t3n",authenticated:true};
