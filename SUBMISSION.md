@@ -30,6 +30,12 @@ Prepared for review only. No bounty submission or payout/account action was perf
 
 The final adapter uses the DID returned by `authenticate()`, not the signing address. A new live run verified a `did:t3n:` subject, allow decision, execution-permitted flag, and redacted metadata. Build and all 8 tests passed again. See [captured results](terminalResults/verification.json) and [verification screenshot](terminalResults/verification.png). The screenshot shows a rendered evidence report, not a T3N console or a raw terminal screenshot.
 
-The Google Docs import source is [submission document](submission.html). Publication as a public Google Doc and submission to Superteam remain pending account access. The full TEE-contract walkthrough has not been completed; this prototype demonstrates authentication and local authorization, not enclave-hosted policy execution.
+The Google Docs import source is [submission document](submission.html). The public Google Doc is available and was verified through an unauthenticated text export. Submission to Superteam remains pending authenticated platform access. The full TEE-contract walkthrough has not been completed; this prototype demonstrates authentication and local authorization, not enclave-hosted policy execution.
 
 Handover preference: provide this small repository for sponsor maintenance. Install from the lockfile, provision sponsor-owned credentials locally, run the supplied verification commands, and independently review trust configuration before hosting. No ongoing hosting commitment is assumed.
+
+## Public submission document
+
+https://docs.google.com/document/d/165XPJ7CiOtPJF5azreG05Y54ClZflkDK1cb3pdqUp1Q/edit?usp=sharing
+
+Public text export verified without sign-in. This verifies document access, not bounty submission or acceptance.
