@@ -49,3 +49,58 @@ C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n>npm run demo
 }
 
 C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n>  
+
+
+with in dirctory not vs code terminal Microsoft Windows [Version 10.0.26200.9445]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\SnapCopy>cd C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n
+
+C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n>npm run build
+
+> t3n-trustgate@0.1.0 build
+> tsc -p tsconfig.json
+
+
+C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n>npm test
+
+> t3n-trustgate@0.1.0 test
+> tsx --test test/*.test.ts
+
+✔ fails closed on identity mismatch (2.3698ms)
+✔ redacts secret metadata (0.511ms)
+✔ allows in-scope request (1.3252ms)
+✔ denies unknown action (0.29ms)
+✔ requires approval above threshold (0.2745ms)
+✔ denies above hard limit even when approved (3.7113ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 312.7946
+
+C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n>npm run demo
+
+> t3n-trustgate@0.1.0 demo
+> tsx src/index.ts
+
+{
+  "executed": true,
+  "audit": {
+    "timestamp": "2026-09-14T02:38:27.230Z",
+    "subject": "demo-agent",
+    "action": "purchase",
+    "resource": "approved-vendor",
+    "decision": "allow",
+    "reason": "request satisfies mandate",
+    "metadata": {
+      "purpose": "demo",
+      "apiKey": "[REDACTED]"
+    }
+  }
+}
+
+C:\Users\SnapCopy\OneDrive\Documents\superteam\t3n>
