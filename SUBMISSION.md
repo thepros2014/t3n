@@ -25,3 +25,11 @@ Approval is a boolean supplied by a trusted caller, not a verified human approva
 Install dependencies from the lockfile, run build/tests/demo, configure private sandbox credentials, and repeat live verification after adapter or SDK changes. Keep policy, authentication, and audit logic separate. Review dependency updates and preserve denial tests. Publish only sanitized evidence; keep credentials and generated files out of source control.
 
 Prepared for review only. No bounty submission or payout/account action was performed.
+
+## Final DID verification and submission artifacts
+
+The final adapter uses the DID returned by `authenticate()`, not the signing address. A new live run verified a `did:t3n:` subject, allow decision, execution-permitted flag, and redacted metadata. Build and all 8 tests passed again. See [captured results](terminalResults/verification.json) and [verification screenshot](terminalResults/verification.png). The screenshot shows a rendered evidence report, not a T3N console or a raw terminal screenshot.
+
+The Google Docs import source is [submission document](submission.html). Publication as a public Google Doc and submission to Superteam remain pending account access. The full TEE-contract walkthrough has not been completed; this prototype demonstrates authentication and local authorization, not enclave-hosted policy execution.
+
+Handover preference: provide this small repository for sponsor maintenance. Install from the lockfile, provision sponsor-owned credentials locally, run the supplied verification commands, and independently review trust configuration before hosting. No ongoing hosting commitment is assumed.

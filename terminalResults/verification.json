@@ -1,0 +1,26 @@
+{
+  "verifiedAt": "2026-09-14T03:52:53.694Z",
+  "node": "v24.19.0",
+  "records": [
+    {
+      "name": "build",
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "output": "✔ fails closed on identity mismatch (20.2387ms)\n✔ redacts secret metadata (0.9127ms)\n✔ authenticated subject authorizes purchase and preserves redaction (0.7438ms)\n✔ unauthenticated matching subject remains denied (0.3031ms)\n✔ allows in-scope request (2.1707ms)\n✔ denies unknown action (0.3077ms)\n✔ requires approval above threshold (0.2691ms)\n✔ denies above hard limit even when approved (0.2083ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 678.8784\n"
+    },
+    {
+      "name": "local-demo",
+      "exitCode": 0,
+      "output": "{\n  \"executed\": true,\n  \"audit\": {\n    \"timestamp\": \"2026-09-14T03:52:49.826Z\",\n    \"subject\": \"demo-agent\",\n    \"action\": \"purchase\",\n    \"resource\": \"approved-vendor\",\n    \"decision\": \"allow\",\n    \"reason\": \"request satisfies mandate\",\n    \"metadata\": {\n      \"purpose\": \"demo\",\n      \"apiKey\": \"[REDACTED]\"\n    }\n  }\n}\n"
+    },
+    {
+      "name": "live-sandbox (sanitized checks; raw output omitted)",
+      "exitCode": 0,
+      "output": "{\n  \"exitSuccess\": true,\n  \"authenticatedDid\": true,\n  \"allowed\": true,\n  \"executed\": true,\n  \"metadataRedacted\": true,\n  \"placeholderAbsent\": true,\n  \"stderrEmpty\": true\n}"
+    }
+  ]
+}

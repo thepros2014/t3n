@@ -30,7 +30,7 @@ For live sandbox verification, copy `.env.example` to a private `.env`, configur
 node --env-file=.env --import tsx src/index.ts
 ```
 
-Never commit or share `.env` or raw SDK logs. Live mode fails closed without a credential. The adapter derives the signing address, loads the SDK WASM component, configures EthSign, and awaits handshake and authentication before returning that address as the subject.
+Never commit or share `.env` or raw SDK logs. Live mode fails closed without a credential. The adapter derives the signing address, loads the SDK WASM component, configures EthSign, and awaits handshake and authentication before returning the DID from the authentication response as the subject. The signing address is not used as the authenticated subject.
 
 ## Policy and limits
 

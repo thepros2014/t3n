@@ -31,3 +31,9 @@ Live validation returned true for every check:
 The credential file and key were not inspected. No comparison against the real key was performed; these checks verify metadata redaction, not a comprehensive arbitrary-secret scan. Only fixed validation booleans were exposed from the live run.
 
 The live path exercises SDK handshake/authentication with a sandbox-only unsafe trust anchor. The execution flag represents authorization permission; no real purchase occurred.
+
+## Final follow-up verification
+
+A later review of current T3N documentation found that the authentication response DID must be used as the subject rather than the signing address. The adapter was corrected. `verification.json` records the fresh build, 8 passing tests, local demo, and successful live DID checks. `verification.png` is a browser screenshot of the rendered evidence report. Historical results above remain historical and are not relabeled as DID verification.
+
+Reproduce with `node scripts/capture-evidence.mjs` using private sandbox credentials. This only persists fixed live validation booleans, not the live DID or raw SDK output.

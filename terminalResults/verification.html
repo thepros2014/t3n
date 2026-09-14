@@ -1,0 +1,40 @@
+<!doctype html><meta charset="utf-8"><title>TrustGate verification</title><style>body{font:16px system-ui;padding:35px;background:#fff;color:#18222e}pre{font:14px monospace;white-space:pre-wrap;background:#eef2f6;padding:18px}h1{font-size:26px}</style><h1>T3N TrustGate — verification evidence</h1><p>2026-09-14T03:52:53.694Z | Node v24.19.0</p><p>Captured command output. Live output is represented only by validation booleans; DID omitted. Sandbox unsafe trust anchor. No purchase executed.</p><h2>build — exit 0</h2><pre></pre><h2>tests — exit 0</h2><pre>✔ fails closed on identity mismatch (20.2387ms)
+✔ redacts secret metadata (0.9127ms)
+✔ authenticated subject authorizes purchase and preserves redaction (0.7438ms)
+✔ unauthenticated matching subject remains denied (0.3031ms)
+✔ allows in-scope request (2.1707ms)
+✔ denies unknown action (0.3077ms)
+✔ requires approval above threshold (0.2691ms)
+✔ denies above hard limit even when approved (0.2083ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 678.8784
+</pre><h2>local-demo — exit 0</h2><pre>{
+  "executed": true,
+  "audit": {
+    "timestamp": "2026-09-14T03:52:49.826Z",
+    "subject": "demo-agent",
+    "action": "purchase",
+    "resource": "approved-vendor",
+    "decision": "allow",
+    "reason": "request satisfies mandate",
+    "metadata": {
+      "purpose": "demo",
+      "apiKey": "[REDACTED]"
+    }
+  }
+}
+</pre><h2>live-sandbox (sanitized checks; raw output omitted) — exit 0</h2><pre>{
+  "exitSuccess": true,
+  "authenticatedDid": true,
+  "allowed": true,
+  "executed": true,
+  "metadataRedacted": true,
+  "placeholderAbsent": true,
+  "stderrEmpty": true
+}</pre>

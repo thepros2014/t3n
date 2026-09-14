@@ -17,7 +17,10 @@ export async function authenticateWithT3n():Promise<TrustIdentity> {
     trustAnchor: { unsafe_trust_server: true } as const,
   });
  await client.handshake();
- await client.authenticate(sdk.createEthAuthInput(address));
- return {subject:address,provider:"t3n",authenticated:true};
+ const did = await client.authenticate(sdk.createEthAuthInput(address));
+ if (typeof did?.value !== "string" || !did.value.startsWith("did:t3n:") || did.value.length <= 8) {
+   throw new Error("T3N authentication did not return a valid subject");
+ }
+ return {subject:did.value,provider:"t3n",authenticated:true};
 }
 export function localDemoIdentity(agentId:string):TrustIdentity { return {subject:agentId,provider:"local-demo",authenticated:true}; }
