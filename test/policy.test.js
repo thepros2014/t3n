@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var node_test_1 = require("node:test");
+var strict_1 = require("node:assert/strict");
+var policy_js_1 = require("../src/policy.js");
+var config_js_1 = require("../src/config.js");
+(0, node_test_1.default)("allows in-scope request", function () { return strict_1.default.equal((0, policy_js_1.evaluatePolicy)({ agentId: "a", action: "read", resource: "catalog" }, config_js_1.defaultPolicy).decision, "allow"); });
+(0, node_test_1.default)("denies unknown action", function () { return strict_1.default.equal((0, policy_js_1.evaluatePolicy)({ agentId: "a", action: "delete", resource: "catalog" }, config_js_1.defaultPolicy).decision, "deny"); });
+(0, node_test_1.default)("requires approval above threshold", function () { return strict_1.default.equal((0, policy_js_1.evaluatePolicy)({ agentId: "a", action: "purchase", resource: "approved-vendor", amount: 300 }, config_js_1.defaultPolicy).decision, "approval_required"); });
+(0, node_test_1.default)("denies above hard limit even when approved", function () { return strict_1.default.equal((0, policy_js_1.evaluatePolicy)({ agentId: "a", action: "purchase", resource: "approved-vendor", amount: 1001, approved: true }, config_js_1.defaultPolicy).decision, "deny"); });
