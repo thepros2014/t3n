@@ -5,7 +5,9 @@ export async function authenticateWithT3n():Promise<TrustIdentity> {
  if (!key) throw new Error("T3N_API_KEY is required for live T3N authentication");
  // Import only in live mode so policy/tests remain credential-independent.
  const sdk=await import("@terminal3/t3n-sdk");
- sdk.setEnvironment((process.env.T3N_ENVIRONMENT ?? "sandbox") as "sandbox");
+ const environment = process.env.T3N_ENVIRONMENT ?? "sandbox";
+ if (environment !== "sandbox") throw new Error("Unsafe trust anchor is restricted to sandbox");
+ sdk.setEnvironment("sandbox");
  const address=sdk.eth_get_address(key);
  const client = new sdk.T3nClient({
     wasmComponent: await sdk.loadWasmComponent(),

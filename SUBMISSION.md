@@ -1,33 +1,27 @@
-# T3N Agent Build Challenge — Submission Notes
+# T3N TrustGate — Submission Notes
 
-## Project
-T3N TrustGate — enterprise authorization gateway for trusted AI agents.
+TrustGate binds a request to an identity established by T3N authentication, applies deterministic default-deny authorization, and produces redacted audit metadata. It is a minimal authorization prototype; no real purchase is performed.
 
-## Usefulness
-TrustGate prevents an agent from silently expanding its mandate. A request must match its trusted identity, allowed action/resource, hard amount limit and approval policy before execution is permitted.
+## Verified behavior
 
-## Maintainability
-The T3N authentication adapter, deterministic policy engine and audit layer are separated. Core behavior is testable without credentials. Live T3N mode is explicit and fails closed.
+Verification on 2026-09-14 UTC with Node.js 24.19.0:
+- Build passed.
+- All 8 tests passed, including matching authenticated subject, mismatched subject denial, unauthenticated subject denial, redaction, allowed scope, unknown action denial, approval threshold, and hard-limit denial despite approval.
+- Local demo passed independently of credentials.
+- Live T3N sandbox execution exited successfully with a non-demo subject, allow decision, execution-permitted flag, and redacted API-key metadata.
 
-## Demonstration evidence to capture
-1. `npm test` passing.
-2. `npm run build` passing.
-3. Demo showing an allowed request.
-4. Change action to an unknown action and capture denial.
-5. Change amount above approval threshold and capture `approval_required`.
-6. Confirm secret-like metadata renders as `[REDACTED]`.
-7. After obtaining T3N credentials locally, capture successful sandbox authentication without exposing the key.
+See `terminalResults/README.md` for sanitized evidence and `README.md` for architecture and setup.
 
-## Handover
-I am willing to continue maintaining the agent. Handover is also straightforward: clone the public repository, install dependencies, configure a new T3N API key locally, run tests/build, then enable live mode. Credentials are never stored in source control.
+## Integration findings and limitations
 
-## Known issues / bugs
-Record only bugs actually reproduced during the final T3N sandbox run. Do not claim unverified SDK bugs as project findings.
+The original live request used `demo-agent`, producing a correct identity-mismatch denial. The entry point now authenticates first and binds request.agentId to identity.subject. Authorization checks were preserved.
 
-## Integration friction observed
+The SDK required an explicit trustAnchor during compilation. The sandbox-only unsafe trust-server setting remains in use, with a runtime guard rejecting other environments. Production trust is not demonstrated.
 
-During local TypeScript compilation, the installed T3N SDK required the
-`trustAnchor` property on `T3nClientConfig`. The adapter was updated to declare an
-explicit sandbox-only unsafe trust-server anchor. This is documented because an
-omitted trust anchor produces a compile-time failure rather than an ambiguous
-runtime failure.
+Approval is a boolean supplied by a trusted caller, not a verified human approval workflow. Redaction is based on metadata field names. Identity objects are an internal trust boundary. There is no external action executor or production API. Independent security review remains required, especially for SDK authentication semantics and production trust anchors.
+
+## Maintenance and handover
+
+Install dependencies from the lockfile, run build/tests/demo, configure private sandbox credentials, and repeat live verification after adapter or SDK changes. Keep policy, authentication, and audit logic separate. Review dependency updates and preserve denial tests. Publish only sanitized evidence; keep credentials and generated files out of source control.
+
+Prepared for review only. No bounty submission or payout/account action was performed.

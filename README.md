@@ -1,41 +1,53 @@
 # T3N TrustGate
 
-A small enterprise authorization gateway for trusted AI agents. TrustGate combines a T3N-authenticated identity boundary with deterministic, default-deny policy enforcement and redacted audit evidence.
+A small authorization gateway combining T3N authentication, deterministic default-deny policy, and redacted audit metadata.
 
-## Why
-Enterprise agents should not be able to silently expand their mandate. TrustGate checks identity, action, resource, spend limits and approval thresholds before an action is considered executable.
+## Architecture
 
-## Quick start
-Requires Node.js 18+.
+Authenticate identity → construct request using identity.subject → validate identity match → validate action/resource/spend/approval → decision → redacted audit.
 
-```bash
-npm install
-npm test
+The entry point authenticates before constructing the purchase request. Local demo mode uses the deterministic `demo-agent` subject. The authorization layer still rejects mismatched or unauthenticated identities.
+
+`executed: true` means the gateway permits execution. There is no purchase executor, payment, or external business action in this submission.
+
+## Setup and verification
+
+Verified with Node.js 24.19.0. Use a Node version supporting `--env-file`.
+
+```sh
+npm ci
 npm run build
+npm test
 npm run demo
 ```
 
-The demo runs without credentials using a clearly labeled local identity. Live T3N mode is opt-in and fails closed if `T3N_API_KEY` is absent.
+On Windows PowerShell, use `npm.cmd` if script execution policy blocks `npm.ps1`.
+The local demo requires no credentials; leave `T3N_LIVE` unset or false.
 
-## Live T3N sandbox
-Copy `.env.example` to `.env`, keep `.env` private, and set your locally obtained T3N API key. Export/load those variables in your shell, then set `T3N_LIVE=true` and run the demo. Never commit the key.
+For live sandbox verification, copy `.env.example` to a private `.env`, configure your credential locally, and set `T3N_LIVE=true` and `T3N_ENVIRONMENT=sandbox`.
 
-The T3N adapter follows the documented SDK authentication flow: sandbox environment, address derivation, WASM component, signing handler, handshake and authentication. No T3N credentials are needed for policy unit tests.
+```sh
+node --env-file=.env --import tsx src/index.ts
+```
 
-## Security properties
-- Default deny for unknown actions/resources.
-- Hard spend cap cannot be bypassed by approval.
-- Human approval threshold for bounded higher-value actions.
-- Trusted identity must match the requesting agent.
-- Audit metadata recursively redacts common secret fields.
-- Live T3N authentication fails closed when credentials are missing.
+Never commit or share `.env` or raw SDK logs. Live mode fails closed without a credential. The adapter derives the signing address, loads the SDK WASM component, configures EthSign, and awaits handshake and authentication before returning that address as the subject.
 
-## Scope
-This challenge build intentionally stays small: authorization, trust boundary, evidence, tests and handover. It does not pretend to execute arbitrary financial or production actions.
+## Policy and limits
 
-## T3N SDK trust anchor note
+Unknown actions or resources are denied. Allowed actions and resources are independent allowlists, not paired permissions. Non-finite or negative amounts are denied. Amounts above 250 require approval; amounts above 1000 are denied even with approval. Identity comparison remains mandatory.
 
-The current T3N SDK requires `trustAnchor` in `T3nClientConfig`. This project uses
-`{ unsafe_trust_server: true }` only for sandbox/development verification. Do not
-treat that setting as a production trust policy; production deployment should use
-a verified trust anchor appropriate to the T3N environment.
+Approval is currently an input boolean, not a verified human-approval service. The gateway is an in-process prototype with typed callers; it is not a hardened public request API. A production caller must establish trusted approval provenance and runtime input validation.
+
+Audit metadata recursively redacts field names matching token, secret, password, API key, or authorization. This is name-based redaction, not a guarantee that arbitrary free text contains no secrets. Audit subjects are persistent identifiers; published verification evidence omits them.
+
+## Verified results
+
+On 2026-09-14 UTC: build passed, all 8 tests passed, and local demo allowed the sample request. A real sandbox run using the local environment completed successfully with a non-demo subject, `decision: allow`, `executed: true`, and `[REDACTED]` API-key metadata. See `terminalResults/README.md` for sanitized verification details. Unit tests using a synthetic T3N identity do not prove network integration; the separate live run does.
+
+## SDK trust anchor and handover
+
+The SDK integration initially failed compilation because `T3nClientConfig` required `trustAnchor`. The adapter explicitly uses `{ unsafe_trust_server: true }`. This is sandbox/development only; runtime configuration now rejects non-sandbox environments. It does not provide production server trust verification.
+
+Before production, independently review the authentication result semantics, replace the unsafe anchor with verified trust configuration, establish approval provenance and runtime validation, and review logging/privacy and execution boundaries.
+
+For maintenance, install from the lockfile, run build/tests and the local demo after changes, then separately verify sandbox authentication after SDK updates. Review SDK upgrades and trust-anchor changes explicitly. Keep credentials private and regenerate sanitized evidence after verification. Generated output and dependencies are excluded from Git; compiled files belong in `dist/`.
